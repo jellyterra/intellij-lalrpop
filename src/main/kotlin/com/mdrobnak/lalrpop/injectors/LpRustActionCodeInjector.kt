@@ -20,25 +20,29 @@ class LpRustActionCodeInjector : MultiHostInjector {
         val codeNode = context.code
         val imports = context.containingFile.importCode
 
-        val rustFunctionHeader = context.actionCodeFunctionHeader(true)
+        try {
+            val rustFunctionHeader = context.actionCodeFunctionHeader(true)
 
-        val prefix = """
-            mod __tmp__ {
-                $imports
-                $rustFunctionHeader {
-            """.trimIndent()
+            val prefix = """
+                mod __tmp__ {
+                    $imports
+                    $rustFunctionHeader {
+                """.trimIndent()
 
-        val suffix = """
-            |    }
-            |}
-        """.trimMargin()
+            val suffix = """
+                |    }
+                |}
+            """.trimMargin()
 
-        registrar
-            .startInjecting(RsLanguage)
-            .addPlace(prefix, suffix, context, codeNode.textRangeInParent)
-            .doneInjecting()
+            registrar
+                .startInjecting(RsLanguage)
+                .addPlace(prefix, suffix, context, codeNode.textRangeInParent)
+                .doneInjecting()
 
-        attachInjectedCodeToCrate(context)
+            attachInjectedCodeToCrate(context)
+        } catch (_: NoSuchMethodError) {
+            // Ignore.
+        }
     }
 
     override fun elementsToInjectIn(): List<Class<out PsiElement>> =
