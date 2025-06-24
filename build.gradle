@@ -27,7 +27,7 @@ dependencies {
 
     intellijPlatform {
         // Test with a recent EAP or release
-        clion("243.20847.43")
+        clion("2024.3.2")
         plugin 'com.jetbrains.rust:243.20847.53'
 
         pluginVerifier()
