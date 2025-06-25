@@ -63,6 +63,7 @@ intellijPlatform {
         ideaVersion {
             // Support 2024.2+ IDEs
             sinceBuild = "242"
+            untilBuild = ""
         }
     }
 
